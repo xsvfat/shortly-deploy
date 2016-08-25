@@ -127,7 +127,7 @@ module.exports = function(grunt) {
     // add your deploy tasks here
     'setEnvProd',
     'eslint',
-    'mochaTest',
+   // 'mochaTest',
     'build',
     'upload'
   ]);
