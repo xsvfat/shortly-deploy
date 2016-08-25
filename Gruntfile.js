@@ -129,7 +129,7 @@ module.exports = function(grunt) {
     'eslint',
    // 'mochaTest',
     'build',
-    'upload'
+    //'upload'
   ]);
 
 };
