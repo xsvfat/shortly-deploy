@@ -39,11 +39,16 @@ userSchema.methods.comparePassword = function(attemptedPassword, callback) {
 
 userSchema.methods.hashPassword = function() {
   console.log('The user document in the method: ', this);
-  
+
   var cipher = Promise.promisify(bcrypt.hash);
   return cipher(this.password, null, null).bind(this)
   .then(function(hash) {
     this.password = hash;
+    this.save(function(err) {
+      if (err) {
+        console.log('Hashing error: ', err);
+      }
+    });
     console.log(this.password);
   });
 };
