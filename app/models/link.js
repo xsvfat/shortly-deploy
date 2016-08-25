@@ -1,6 +1,6 @@
+var mongoose = require('mongoose');
 var db = require('../config');
 var crypto = require('crypto');
-var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 // var Link = db.Model.extend({
@@ -18,7 +18,7 @@ var Schema = mongoose.Schema;
 //   }
 // });
 
-var Link = new Schema({
+var linkSchema = new Schema({
   id: String,
   url: String,
   baseUrl: String,
@@ -29,11 +29,14 @@ var Link = new Schema({
 
 });
 
-// Link.prototype.init = function(docs, opts, fn) {
-//   var shasum = crypto.createHash('sha1');
-//   shasum.update(this.url);
-//   this.code = shasum.digest('hex').slice(0, 5);
-// };
+linkSchema.prototype.init = function(docs, opts, fn) {
+  var shasum = crypto.createHash('sha1');
+  shasum.update(this.url);
+  this.code = shasum.digest('hex').slice(0, 5);
+  this.save(function(err) {
+    console.log('errr', err);
+  });
+};
 
-module.exports = Link;
+module.exports = linkSchema;
 
