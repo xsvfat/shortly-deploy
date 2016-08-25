@@ -38,12 +38,14 @@ userSchema.methods.comparePassword = function(attemptedPassword, callback) {
 };
 
 userSchema.methods.hashPassword = function() {
+  console.log('The user document in the method: ', this);
+  
   var cipher = Promise.promisify(bcrypt.hash);
   return cipher(this.password, null, null).bind(this)
   .then(function(hash) {
     this.password = hash;
+    console.log(this.password);
   });
-  console.log(this.password);
 };
 
 module.exports = userSchema;
