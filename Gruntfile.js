@@ -36,6 +36,9 @@ module.exports = function(grunt) {
     },
 
     eslint: {
+      options: {
+        quiet: false
+      },
       target: [
         'app/collections/*.js',
         'app/models/*.js',
@@ -70,17 +73,6 @@ module.exports = function(grunt) {
       }
     },
 
-    // shell: {
-    //   prodServer: {
-    //     multiple: {
-    //       command: [
-    //         'git push live master', 
-    //         'catdog1'
-    //       ].join(';')
-    //     }
-    //   }
-    // },
-
     shell: {
       'git-push': {
         command: 'git push live master',
@@ -106,19 +98,26 @@ module.exports = function(grunt) {
   ////////////////////////////////////////////////////
 
   grunt.registerTask('test', [
+    'setEnvDev',
     'eslint',
     'mochaTest',
-    'nodemon'
   ]);
 
   grunt.registerTask('build', [
     'concat', 'uglify', 'cssmin', 'shell:git-push'
   ]);
 
+  grunt.registerTask('setEnvProd', function() {
+    process.env.NODE_ENV = 'prod';
+  });
+
+  grunt.registerTask('setEnvDev', function() {
+    process.env.NODE_ENV = 'dev';
+  });
+
   grunt.registerTask('upload', function(n) {
     if (grunt.option('prod')) {
       // add your production server task here
-      process.env.NODE_ENV = 'pro';
     } else {
       grunt.task.run([ 'server-dev' ]);
     }
@@ -126,8 +125,11 @@ module.exports = function(grunt) {
 
   grunt.registerTask('deploy', [
     // add your deploy tasks here
-    'build'
+    'setEnvProd',
+    'eslint',
+    'mochaTest',
+    'build',
+    'upload'
   ]);
-
 
 };

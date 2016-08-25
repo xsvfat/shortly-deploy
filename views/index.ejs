@@ -6,8 +6,8 @@
   });
 </script>
 
-  <%if (process.env.NODE_ENV !== 'dev') {%>
-    <script src="/dist/built.js"></script>
+  <%if (process.env.NODE_ENV === 'prod') {%>
+    <script src="/dist/uglifiedJS.js"></script>
   <%} else {%>
     <script src='/client/app.js'></script>
     <script src='/client/link.js'></script>

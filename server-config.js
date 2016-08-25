@@ -8,7 +8,7 @@ var util = require('./lib/utility');
 var handler = require('./lib/request-handler');
 
 var app = express();
-process.env.NODE_ENV = 'dev';
+//process.env.NODE_ENV = 'dev';
 console.log(process.env.NODE_ENV);
 
 app.set('views', __dirname + '/views');
