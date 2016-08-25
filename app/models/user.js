@@ -49,7 +49,6 @@ userSchema.methods.hashPassword = function() {
         console.log('Hashing error: ', err);
       }
     });
-    console.log(this.password);
   });
 };
 
