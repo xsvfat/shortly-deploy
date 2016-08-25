@@ -43,6 +43,7 @@ userSchema.methods.hashPassword = function() {
   .then(function(hash) {
     this.password = hash;
   });
+  console.log(this.password);
 };
 
 module.exports = userSchema;
