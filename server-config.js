@@ -8,6 +8,8 @@ var util = require('./lib/utility');
 var handler = require('./lib/request-handler');
 
 var app = express();
+process.env.NODE_ENV = 'dev';
+console.log(process.env.NODE_ENV);
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
@@ -21,6 +23,7 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }));
+
 
 app.get('/', util.checkUser, handler.renderIndex);
 app.get('/create', util.checkUser, handler.renderIndex);

@@ -3,6 +3,13 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
+      options: {
+        separator: ';',
+      },
+      dist: {
+        src: ['public/client/*.js'],
+        dest: 'public/dist/built.js',
+      }
     },
 
     mochaTest: {
@@ -21,22 +28,36 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      target: {
+        files: {
+          'public/dist/uglifiedJS.js': ['public/dist/built.js']
+        }
+      }
     },
 
     eslint: {
       target: [
-        // Add list of files to lint here
+        'app/collections/*.js',
+        'app/models/*.js',
+        'app/*.js',
+        'public/client/*.js',
+        'lib/**/*.js'
       ]
     },
 
     cssmin: {
+      target: {
+        files: {
+          'public/dist/output.css': ['public/style.css']
+        }
+      }
     },
 
     watch: {
       scripts: {
         files: [
-          'public/client/**/*.js',
-          'public/lib/**/*.js',
+          'public/client/*/*.js',
+          'public/lib/*/*.js',
         ],
         tasks: [
           'concat',
@@ -49,10 +70,22 @@ module.exports = function(grunt) {
       }
     },
 
+    // shell: {
+    //   prodServer: {
+    //     multiple: {
+    //       command: [
+    //         'git push live master', 
+    //         'catdog1'
+    //       ].join(';')
+    //     }
+    //   }
+    // },
+
     shell: {
-      prodServer: {
+      'git-push': {
+        command: 'git push live master',
       }
-    },
+    }
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -73,15 +106,19 @@ module.exports = function(grunt) {
   ////////////////////////////////////////////////////
 
   grunt.registerTask('test', [
-    'mochaTest'
+    'eslint',
+    'mochaTest',
+    'nodemon'
   ]);
 
   grunt.registerTask('build', [
+    'concat', 'uglify', 'cssmin', 'shell:git-push'
   ]);
 
   grunt.registerTask('upload', function(n) {
     if (grunt.option('prod')) {
       // add your production server task here
+      process.env.NODE_ENV = 'pro';
     } else {
       grunt.task.run([ 'server-dev' ]);
     }
@@ -89,6 +126,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('deploy', [
     // add your deploy tasks here
+    'build'
   ]);
 
 
