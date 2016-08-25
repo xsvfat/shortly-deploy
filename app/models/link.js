@@ -29,7 +29,7 @@ var linkSchema = new Schema({
 
 });
 
-linkSchema.prototype.init = function(docs, opts, fn) {
+linkSchema.methods.shash = function(docs, opts, fn) {
   var shasum = crypto.createHash('sha1');
   shasum.update(this.url);
   this.code = shasum.digest('hex').slice(0, 5);
